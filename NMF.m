@@ -1,19 +1,30 @@
 clear; close all; clc;
 
-% I = 4, J = 5, R = 4
-W = [1, 2, 3, 0;
-     2, 3, 0, 5;
-     3, 0, 5, 6;
-     0, 5, 6, 7];
+% define some variable
+I = 4;
+J = 5;
+R = 3;
 
-J = [1, 2, 3, 4, 5;
-     9, 3, 4, 5, 6;
-     3, 4, 5, 6, 7;
-     4, 5, 9, 7, 8];
+% generate W, H
+W = generateFullrankMatrix(I, R);
+H = generateFullrankMatrix(R, J);
 
-X = W * J;
+% caluclate X
+X = W * H;
 
+% check matrix
 disp(X);
-disp(rank(W));
-disp(rank(J));
+disp(W);
+disp(H);
+
+% check ranks
 disp(rank(X));
+disp(rank(W));
+disp(rank(H));
+
+function A = generateFullrankMatrix(row, column)
+A = zeros(row, column);
+while rank(A) < min(row, column)
+    A = rand(row, column);
+end
+end
