@@ -5,26 +5,26 @@ I = 4;
 J = 5;
 R = 3;
 
-% generate W, H
-W = generateFullrankMatrix(I, R);
-H = generateFullrankMatrix(R, J);
+% generate basisMatrix, coefficientMatrix
+basisMatrix = generateFullrankMatrix(I, R);
+coefficientMatrix = generateFullrankMatrix(R, J);
 
 % caluclate X
-X = W * H;
+X = basisMatrix * coefficientMatrix;
 
 % check matrix
 disp(X);
-disp(W);
-disp(H);
+disp(basisMatrix);
+disp(coefficientMatrix);
 
 % check ranks
 disp(rank(X));
-disp(rank(W));
-disp(rank(H));
+disp(rank(basisMatrix));
+disp(rank(coefficientMatrix));
 
-function A = generateFullrankMatrix(row, column)
-A = zeros(row, column);
-while rank(A) < min(row, column)
-    A = rand(row, column);
+function fullrankMatrix = generateFullrankMatrix(row, column)
+fullrankMatrix = zeros(row, column);
+while rank(fullrankMatrix) < min(row, column)
+    fullrankMatrix = rand(row, column);
 end
 end
