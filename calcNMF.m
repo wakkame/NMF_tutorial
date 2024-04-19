@@ -15,7 +15,7 @@ function [W, H, WH] = calcNMF(X, args)
 
 % check arguments and set default value
 arguments
-    X (:, :) double
+    X (:, :) double {mustBeReal, mustBeNonnegative}
     args.K (1, 1) double {mustBeInteger, mustBeNonnegative} = 10
     args.nIter (1, 1) double {mustBeInteger, mustBeNonnegative} = 1000
 end
