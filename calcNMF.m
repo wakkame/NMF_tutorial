@@ -27,11 +27,16 @@ W = generateFullrankMatrix(size(X, 1), K);
 H = generateFullrankMatrix(K, size(X, 2));
 
 % update W, H
-for i = nIter
+costValueTransition = zeros(1, nIter);
+for i = 1 : nIter
     W = W .* (X * H.') ./ (W * (H * H.'));
     H = H .* (W.' * X) ./ ((W.' * W) * H);
     [W, H] = matirixNormalization(W, H);
+    costValueTransition(1, i) = calcSquaredEuclideanDistance(X, W, H);
 end
+
+% display cost function
+displayCostValueTransition(costValueTransition, nIter);
 
 % calculate WH
 WH = W * H;
@@ -50,5 +55,17 @@ function [normalizedW, normalizedH] = matirixNormalization(W, H)
     Ck = sum(W, 1);
     normalizedW = W ./ Ck;
     normalizedH = H .* Ck.';
+end
+%--------------------------------------------------------------------------
+function [costValue] = calcSquaredEuclideanDistance(X, W, H)
+    costValue = sum((X - W * H) .^ 2, "all");
+end
+%--------------------------------------------------------------------------
+function [] = displayCostValueTransition(costFunc, nIter)
+costFuncAxis = linspace(0, nIter - 1, nIter);
+plot(costFuncAxis, costFunc);
+xlabel("numberOfIterations[-]");
+ylabel("CostValue[-]");
+set(gca, "FontSize", 18, "FontName", "Times");
 end
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% EOF %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
