@@ -28,8 +28,9 @@ H = generateFullrankMatrix(K, size(X, 2));
 
 % update W, H
 for i = nIter
-    W = W .* (X * H') ./ (W * (H * H'));
-    H = H .* (W' * X) ./ ((W' * W) * H);
+    W = W .* (X * H.') ./ (W * (H * H.'));
+    H = H .* (W.' * X) ./ ((W.' * W) * H);
+    [W, H] = matirixNormalization(W, H);
 end
 
 % calculate WH
@@ -43,5 +44,11 @@ fullrankMatrix = zeros(row, column);
 while rank(fullrankMatrix) < min(row, column)
     fullrankMatrix = rand(row, column);
 end
+end
+%--------------------------------------------------------------------------
+function [normalizedW, normalizedH] = matirixNormalization(W, H)
+    Ck = sum(W, 1);
+    normalizedW = W ./ Ck;
+    normalizedH = H .* Ck.';
 end
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% EOF %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
