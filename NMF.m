@@ -4,16 +4,36 @@ clear; close all; clc;
 I = 100;
 J = 200;
 R = 10;
+K = 10;
+nIter = 1000;
 
 % generate X1, X2
 X1 = generateFullrankMatrix(I, R);
 X2 = generateFullrankMatrix(R, J);
 
-% caluclate X
+% calculate X
 X = X1 * X2;
 
 % check matrix
 displayColorMap(X);
+
+% generate W, H
+W = generateFullrankMatrix(I, K);
+H = generateFullrankMatrix(K, J);
+
+% update W, H
+for i = nIter
+    W = W .* (X * H') ./ (W * (H * H'));
+    H = H .* (W' * X) ./ ((W' * W) * H);
+end
+
+% calculate WH
+WH = W * H;
+
+% check result
+displayColorMap(W);
+displayColorMap(H);
+displayColorMap(WH);
 
 function fullrankMatrix = generateFullrankMatrix(row, column)
 fullrankMatrix = zeros(row, column);
