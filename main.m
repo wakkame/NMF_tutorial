@@ -39,6 +39,14 @@ displayColorMap(W);
 displayColorMap(H);
 displayColorMap(WH);
 
+% check basis vector
+Wn = W(:, 1);
+figure;
+plot(Wn);
+axis xy;
+xlabel("Frequency[Hz]");
+set(gca, "FontSize", 18, "FontName", "Times");
+
 function [] = displayColorMap(matrix)
 figure;
 imagesc(matrix);
