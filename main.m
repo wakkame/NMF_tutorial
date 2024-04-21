@@ -17,6 +17,7 @@ F = DGTtool("windowShift", shiftLength, ...
             "FFTnum", windowLength, ...
             "windowName", windowType);
 S = F(inputSignal);
+S(windowLength / 2 + 1, :) = [];
 F.plot(inputSignal, fs);
 
 % calulate amplitude spectrogram
@@ -26,8 +27,6 @@ X = abs(S);
 [W, H, WH] = calcNMF(X, ...
                      "K", K, ...
                      "nIter", nIter);
-
-% check 
 
 % check matrixs
 displayColorMap(X);
