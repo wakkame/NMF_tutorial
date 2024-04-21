@@ -63,6 +63,7 @@ end
 %--------------------------------------------------------------------------
 function [] = displayCostValueTransition(costFunc, nIter)
 costFuncAxis = linspace(0, nIter - 1, nIter);
+figure;
 plot(costFuncAxis, costFunc);
 xlabel("numberOfIterations[-]");
 ylabel("CostValue[-]");

@@ -1,23 +1,37 @@
 clear; close all; clc;
 
 % define some variable
-I = 100;
-J = 200;
-R = 10;
-K = 10;
+windowLength = 2 ^ 11;
+shiftLength = 2 ^ 10;
+windowType = "han";
+paddingMethod = "end";
+K = 20;
 nIter = 1000;
 
-% generate X1, X2
-X1 = generateFullrankMatrix(I, R);
-X2 = generateFullrankMatrix(R, J);
+% loading audio files
+[inputSignal, fs] = audioread("guitar.wav");
 
-% calculate X
-X = X1 * X2;
+% calculate STFT
+F = DGTtool("windowShift", shiftLength, ...
+            "windowLength", windowLength, ...
+            "FFTnum", windowLength, ...
+            "windowName", windowType);
+S = F(inputSignal);
+F.plot(inputSignal, fs);
+
+% calulate amplitude spectrogram
+X = abs(S);
 
 % execute calcNMF
 [W, H, WH] = calcNMF(X, ...
                      "K", K, ...
                      "nIter", nIter);
+
+% change dimension to dB
+X = dBTransform(X);
+W = dBTransform(W);
+H = dBTransform(H);
+WH = dBTransform(WH);
 
 % check matrixs
 displayColorMap(X);
@@ -25,16 +39,13 @@ displayColorMap(W);
 displayColorMap(H);
 displayColorMap(WH);
 
-function fullrankMatrix = generateFullrankMatrix(row, column)
-fullrankMatrix = zeros(row, column);
-while rank(fullrankMatrix) < min(row, column)
-    fullrankMatrix = rand(row, column);
-end
-end
-
 function [] = displayColorMap(matrix)
 figure;
 imagesc(matrix);
 axis xy;
 set(gca, "FontSize", 18, "FontName", "Times");
+end
+
+function [dBMatrix] = dBTransform(matrix)
+    dBMatrix = 20 * log10(matrix);
 end
