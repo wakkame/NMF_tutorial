@@ -17,7 +17,6 @@ F = DGTtool("windowShift", shiftLength, ...
             "FFTnum", windowLength, ...
             "windowName", windowType);
 S = F(inputSignal);
-S(windowLength / 2 + 1, :) = [];
 F.plot(inputSignal, fs);
 
 % calulate amplitude spectrogram
@@ -27,6 +26,12 @@ X = abs(S);
 [W, H, WH] = calcNMF(X, ...
                      "K", K, ...
                      "nIter", nIter);
+
+% change dimension to dB
+X = dBTransform(X);
+W = dBTransform(W);
+H = dBTransform(H);
+WH = dBTransform(WH);
 
 % check matrixs
 displayColorMap(X);
@@ -39,4 +44,8 @@ figure;
 imagesc(matrix);
 axis xy;
 set(gca, "FontSize", 18, "FontName", "Times");
+end
+
+function [dBMatrix] = dBTransform(matrix)
+    dBMatrix = 20 * log10(matrix);
 end
