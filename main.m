@@ -41,7 +41,7 @@ displayColorMap(WH);
 
 % check basis vector
 Wn = W(:, 1);
-WnAxis = (linspace(0, fs / 2, windowLength / 2 + 1)).';
+WnAxis = (linspace(0, fs / 2, size(W, 1))).';
 figure;
 plot(WnAxis, Wn);
 axis xy;
