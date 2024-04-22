@@ -41,8 +41,9 @@ displayColorMap(WH);
 
 % check basis vector
 Wn = W(:, 1);
+WnAxis = (linspace(0, fs / 2, windowLength / 2 + 1)).';
 figure;
-plot(Wn);
+plot(WnAxis, Wn);
 axis xy;
 xlabel("Frequency[Hz]");
 set(gca, "FontSize", 18, "FontName", "Times");
